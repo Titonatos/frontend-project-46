@@ -1,16 +1,23 @@
 {
-  "name": "frontend-project-46",
-  "version": "1.0.0",
+  "name": "@hexlet/code",
   "type": "module",
+  "version": "1.0.0",
   "description": "[![Actions Status](https://github.com/Titonatos/frontend-project-46/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/Titonatos/frontend-project-46/actions)",
   "main": "index.js",
+  "bin": {
+    "gendiff": "bin/gendiff.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "commander": "^11.1.0",
-    "eslint": "^8.53.0"
+    "commander": "^11.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.53.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.29.0"
   }
 }
