@@ -1,0 +1,16 @@
+{
+  "name": "frontend-project-46",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "[![Actions Status](https://github.com/Titonatos/frontend-project-46/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/Titonatos/frontend-project-46/actions)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^11.1.0",
+    "eslint": "^8.53.0"
+  }
+}
