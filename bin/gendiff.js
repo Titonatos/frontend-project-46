@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { program } from 'commander';
-import getData from '../src/parse.js';
+import genDiff from '../src/parse.js';
 
 program
   .version('0.1.0')
@@ -13,7 +13,7 @@ program
   .action((filepath1, filepath2) => {
     // console.log(JSON.parse(readFile(filepath1)));
     // console.log(JSON.parse(readFile(filepath2)));
-    console.log(getData('host', filepath1));
+    console.log(genDiff(filepath1, filepath2));
   });
 
 program.parse(process.argv);
