@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import { fileURLToPath } from 'url';
 import path, { dirname } from 'node:path';
-import genDiff from '../src/parse.js';
+import genDiff from '../src/difference.js';
 
 let __filename;
 let __dirname;
@@ -11,9 +11,16 @@ beforeEach(() => {
   __dirname = dirname(__filename);
 });
 
-test('scanDifference', () => {
+test('JSONDifference', () => {
   const referenceFilePath = path.resolve(`${__dirname}`, '../__fixtures__/result.txt');
   const expectedDiff = fs.readFileSync(referenceFilePath, 'utf-8');
 
-  expect(genDiff('file1.json', 'file2.json').trim()).toMatch(expectedDiff.trim());
+  expect(genDiff('file1.json', 'file2.json')).toMatch(expectedDiff);
+});
+
+test('yamlDifference', () => {
+  const referenceFilePath = path.resolve(`${__dirname}`, '../__fixtures__/result.txt');
+  const expectedDiff = fs.readFileSync(referenceFilePath, 'utf-8');
+
+  expect(genDiff('file1.yaml', 'file2.yml')).toMatch(expectedDiff);
 });

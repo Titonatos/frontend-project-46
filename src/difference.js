@@ -1,27 +1,5 @@
-import fs from 'node:fs';
-import process from 'node:process';
-import path from 'node:path';
 import _ from 'lodash';
-
-const readFile = (fileName) => {
-  const currenDirectory = process.cwd();
-  const absoluteFilePath = path.resolve(currenDirectory, fileName);
-
-  return fs.readFileSync(absoluteFilePath);
-};
-
-const getFileType = (fileName) => fileName.split('.').at(-1);
-
-const getData = (fileName) => {
-  const fileData = readFile(fileName);
-  const fileType = getFileType(fileName);
-
-  if (fileType.toLowerCase() === 'json') {
-    return JSON.parse(fileData);
-  }
-
-  return fileData;
-};
+import getData from './parsers.js';
 
 export default (fileName1, fileName2) => {
   const file1 = getData(fileName1);
