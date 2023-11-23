@@ -1,37 +1,50 @@
 import _ from 'lodash';
 import getData from './parsers.js';
+import stylish from './stylish.js';
 
-export default (fileName1, fileName2) => {
-  const file1 = getData(fileName1);
-  const file2 = getData(fileName2);
+const getDifference = (path1, path2, formater = stylish) => {
+  const file1Data = getData(path1);
+  const file2Data = getData(path2);
 
-  const keys1 = Object.keys(file1).sort();
-  const keys2 = Object.keys(file2).sort();
+  const iter = (file1, file2, depth = 1) => {
+    const isObject = (obj) => Object.prototype.toString.call(obj) === '[object Object]';
 
-  const same = '    ';
-  const origin = '  - ';
-  const other = '  + ';
+    const keys1 = Object.keys(file1);
+    const keys2 = Object.keys(file2);
 
-  const differents = keys1.map((key) => {
-    if (keys2.includes(key) === false) {
-      return `${origin + key} : ${file1[key]}`;
-    }
+    const noChangeStatus = 'noChange';
+    const addedStatus = 'added';
+    const removedStatus = 'removed';
 
-    if (file1[key] === file2[key]) {
-      return `${same + key} : ${file1[key]}`;
-    }
+    const file1Difference = keys1.flatMap((key) => {
+      if (keys2.includes(key)) {
+        if (isObject(file1[key]) && isObject(file2[key])) {
+          return { key, value: iter(file1[key], file2[key], depth + 1), status: noChangeStatus };
+        }
 
-    const diff1 = `${origin + key} : ${file1[key]}`;
-    const diff2 = `${other + key} : ${file2[key]}`;
+        if (file1[key] === file2[key]) {
+          return { key, value: file1[key], status: noChangeStatus };
+        }
 
-    return `${diff1}\n${diff2}`;
-  });
+        return [
+          { key, value: file1[key], status: removedStatus },
+          { key, value: file2[key], status: addedStatus }];
+      }
 
-  const remainingDifferents = keys2
-    .filter((key) => keys1.includes(key) === false)
-    .map((key) => `${other + key} : ${file2[key]}`);
+      return { key, value: file1[key], status: removedStatus };
+    });
 
-  const allDifferents = _.concat('{', differents, remainingDifferents, '}');
+    const file2Additional = keys2
+      .filter((key) => keys1.includes(key) === false)
+      .flatMap((key) => ({ key, value: file2[key], status: addedStatus }));
 
-  return allDifferents.join('\n');
+    return _.sortBy(
+      _.concat(file1Difference, file2Additional),
+      (obj) => obj.key,
+    );
+  };
+
+  return formater(iter(file1Data, file2Data));
 };
+
+export default getDifference;

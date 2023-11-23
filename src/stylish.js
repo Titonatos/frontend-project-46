@@ -1,19 +1,15 @@
 /* eslint-disable max-len */
 const stylish = (data) => {
-  const noChangePrefix = '  ';
-  const addedPrefix = '+ ';
-  const removedPrefix = '- ';
-
   const status = {
     noChange: '  ',
     added: '+ ',
     removed: '- ',
-    undefined: '    ',
+    undefined: '',
   };
 
   const getIndent = (multipler, correction = 2, indent = ' ', indentPerMultipler = 4) => `${indent.repeat(multipler * indentPerMultipler - correction)}`;
 
-  const getLine = (depth, key, value, prefix = noChangePrefix, correction = 2) => `${getIndent(depth, correction) + prefix + key}: ${value}`;
+  const getLine = (depth, key, value, prefix, correction = 2) => `${getIndent(depth, correction) + prefix + key}: ${value}`;
 
   const isObject = (obj) => Object.prototype.toString.call(obj) === '[object Object]';
 
@@ -52,13 +48,13 @@ const stylish = (data) => {
       return Object.keys(dataToIter).flatMap((key) => {
         if (isObject(dataToIter[key])) {
           return [
-            `${getIndent(depth) + status[getStatus(dataToIter)] + key}: {`,
+            `${getIndent(depth, 0) + status[getStatus(dataToIter)] + key}: {`,
             iter(dataToIter[key], depth + 1),
             `${getIndent(depth, 0)}}`,
           ].join('\n');
         }
 
-        return getLine(depth, key, dataToIter[key], status[getStatus(dataToIter)]);
+        return getLine(depth, key, dataToIter[key], status[getStatus(dataToIter)], 0);
       }).join('\n');
     }
 
