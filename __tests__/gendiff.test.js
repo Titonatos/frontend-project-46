@@ -1,26 +1,19 @@
 import fs from 'node:fs';
 import { fileURLToPath } from 'url';
 import path, { dirname } from 'node:path';
-import genDiff from '../src/difference.js';
+import getDifference from '../src/difference.js';
 
-let __filename;
-let __dirname;
+// let expectedDiff;
+let expectedRecurentDiff;
 
 beforeEach(() => {
-  __filename = fileURLToPath(import.meta.url);
-  __dirname = dirname(__filename);
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = dirname(__filename);
+
+  const referenceRecFilePath = path.resolve(`${__dirname}`, '../__fixtures__/recurseResult.txt');
+  expectedRecurentDiff = fs.readFileSync(referenceRecFilePath, 'utf-8');
 });
 
-test('JSONDifference', () => {
-  const referenceFilePath = path.resolve(`${__dirname}`, '../__fixtures__/result.txt');
-  const expectedDiff = fs.readFileSync(referenceFilePath, 'utf-8');
-
-  expect(genDiff('file1.json', 'file2.json')).toMatch(expectedDiff);
-});
-
-test('yamlDifference', () => {
-  const referenceFilePath = path.resolve(`${__dirname}`, '../__fixtures__/result.txt');
-  const expectedDiff = fs.readFileSync(referenceFilePath, 'utf-8');
-
-  expect(genDiff('file1.yaml', 'file2.yml')).toMatch(expectedDiff);
+test('recurentJSONDifference', () => {
+  expect(getDifference('__fixtures__/recFile1.json', '__fixtures__/recFile2.json')).toMatch(expectedRecurentDiff);
 });
