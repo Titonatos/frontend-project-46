@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import getData from './parsers.js';
-import stylish from './stylish.js';
+import format from './format.js';
 
-const getDifference = (path1, path2, formater = stylish) => {
+const getDifference = (path1, path2, formater = 'stylish') => {
   const file1Data = getData(path1);
   const file2Data = getData(path2);
 
@@ -44,7 +44,7 @@ const getDifference = (path1, path2, formater = stylish) => {
     );
   };
 
-  return formater(iter(file1Data, file2Data));
+  return format(iter(file1Data, file2Data), formater);
 };
 
 export default getDifference;
