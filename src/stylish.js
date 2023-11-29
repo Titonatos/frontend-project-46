@@ -1,3 +1,15 @@
+const getIndent = (multipler, correction = 2, indent = ' ', indentPerMultipler = 4) => `${indent.repeat(multipler * indentPerMultipler - correction)}`;
+
+const isObject = (obj) => Object.prototype.toString.call(obj) === '[object Object]';
+
+const getKey = (object) => object.key;
+
+const getValue = (object, value = 'value') => object[value];
+
+const hasObjectChildren = (obj) => isObject(getValue(obj));
+
+const getStatus = (object) => object.status;
+
 const stylish = (data) => {
   const prefixes = {
     noChange: '  ',
@@ -5,18 +17,6 @@ const stylish = (data) => {
     removed: '- ',
     undefined: '',
   };
-
-  const getIndent = (multipler, correction = 2, indent = ' ', indentPerMultipler = 4) => `${indent.repeat(multipler * indentPerMultipler - correction)}`;
-
-  const isObject = (obj) => Object.prototype.toString.call(obj) === '[object Object]';
-
-  const getKey = (object) => object.key;
-
-  const getValue = (object, value = 'value') => object[value];
-
-  const hasObjectChildren = (obj) => isObject(getValue(obj));
-
-  const getStatus = (object) => object.status;
 
   const formatLine = (key, value, status, depth, correction = 2) => `${getIndent(depth, correction) + prefixes[status] + key}: ${value}`;
 
@@ -52,23 +52,23 @@ const stylish = (data) => {
       );
     }
 
-    if (getStatus(dataToIter) === undefined) {
-      const formattedLines = Object.keys(dataToIter).map((key) => {
-        if (isObject(dataToIter[key])) {
-          return [
-            `${getIndent(depth, 0) + prefixes[getStatus(dataToIter)] + key}: {`,
-            iter(dataToIter[key], depth + 1),
-            `${getIndent(depth, 0)}}`,
-          ].join('\n');
-        }
-
-        return formatLine(key, dataToIter[key], getStatus(dataToIter), depth, 0);
-      });
-
-      return formattedLines;
+    if (getStatus(dataToIter) !== undefined) {
+      return formatLine(getKey(dataToIter), getValue(dataToIter), getStatus(dataToIter), depth);
     }
 
-    return formatLine(getKey(dataToIter), getValue(dataToIter), getStatus(dataToIter), depth);
+    const formattedLines = Object.keys(dataToIter).map((key) => {
+      if (isObject(dataToIter[key])) {
+        return [
+          `${getIndent(depth, 0) + prefixes[getStatus(dataToIter)] + key}: {`,
+          iter(dataToIter[key], depth + 1),
+          `${getIndent(depth, 0)}}`,
+        ].join('\n');
+      }
+
+      return formatLine(key, dataToIter[key], getStatus(dataToIter), depth, 0);
+    });
+
+    return formattedLines;
   };
 
   return `{\n${iter(data)}\n}`;
