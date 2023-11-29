@@ -8,6 +8,8 @@ const getStatuses = {
   noChange: 'noChange',
   added: 'added',
   removed: 'removed',
+  old: 'old',
+  updated: 'updated',
 };
 
 const getDifference = (path1, path2, formater = 'stylish') => {
@@ -15,7 +17,9 @@ const getDifference = (path1, path2, formater = 'stylish') => {
   const file2Data = getData(path2);
 
   const iter = (file1, file2, depth = 1) => {
-    const { noChange, added, removed } = getStatuses;
+    const {
+      noChange, added, removed, old, updated,
+    } = getStatuses;
 
     const keys1 = Object.keys(file1);
     const keys2 = Object.keys(file2);
@@ -34,8 +38,8 @@ const getDifference = (path1, path2, formater = 'stylish') => {
       }
 
       return [
-        { key, value: file1[key], status: removed },
-        { key, value: file2[key], status: added }];
+        { key, value: file1[key], status: old },
+        { key, value: file2[key], status: updated }];
     });
 
     const file2Additional = keys2

@@ -15,6 +15,8 @@ const stylish = (data) => {
     noChange: '  ',
     added: '+ ',
     removed: '- ',
+    old: '- ',
+    updated: '+ ',
     undefined: '',
   };
 
@@ -56,7 +58,7 @@ const stylish = (data) => {
       return formatLine(getKey(dataToIter), getValue(dataToIter), getStatus(dataToIter), depth);
     }
 
-    const formattedLines = Object.keys(dataToIter).map((key) => {
+    return Object.keys(dataToIter).map((key) => {
       if (isObject(dataToIter[key])) {
         return [
           `${getIndent(depth, 0) + prefixes[getStatus(dataToIter)] + key}: {`,
@@ -67,8 +69,6 @@ const stylish = (data) => {
 
       return formatLine(key, dataToIter[key], getStatus(dataToIter), depth, 0);
     });
-
-    return formattedLines;
   };
 
   return `{\n${iter(data)}\n}`;

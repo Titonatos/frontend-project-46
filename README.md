@@ -4,4 +4,8 @@
 [![Test Coverage](https://api.codeclimate.com/v1/badges/d4af36644cf8c47e487a/test_coverage)](https://codeclimate.com/github/Titonatos/frontend-project-46/test_coverage)
 
 ## Gendiff
+### Stylish format
 [![asciicast](https://asciinema.org/a/LRNt1IBguJbC7t0DVuSpzTnFS.svg)](https://asciinema.org/a/LRNt1IBguJbC7t0DVuSpzTnFS)
+
+### Plain format
+[![asciicast](https://asciinema.org/a/w5pCkkuLtksZWQlVWk5FxCdBM.svg)](https://asciinema.org/a/w5pCkkuLtksZWQlVWk5FxCdBM)
