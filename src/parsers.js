@@ -3,26 +3,30 @@ import yaml from 'js-yaml';
 import process from 'node:process';
 import path from 'node:path';
 
-const readFile = (fileName) => {
+const readFile = (filePath) => {
   const currenDirectory = process.cwd();
-  const absoluteFilePath = path.resolve(currenDirectory, fileName);
+  const absoluteFilePath = path.resolve(currenDirectory, filePath);
 
   return fs.readFileSync(absoluteFilePath);
 };
 
 const getFileType = (fileName) => path.extname(fileName);
 
-export default (fileName) => {
-  const fileData = readFile(fileName);
-  const fileType = getFileType(fileName);
+export default (filePath) => {
+  const fileData = readFile(filePath);
+  const fileType = getFileType(filePath);
 
-  if (fileType.toLowerCase() === '.json') {
-    return JSON.parse(fileData);
+  switch (fileType.toLowerCase()) {
+    case '.json': {
+      return JSON.parse(fileData);
+    }
+
+    case '.yml':
+    case '.yaml': {
+      return yaml.load(fileData);
+    }
+
+    default:
+      throw new Error('This file is not supported');
   }
-
-  if (fileType.toLowerCase() === '.yml' || fileType.toLowerCase() === '.yaml') {
-    return yaml.load(fileData);
-  }
-
-  return fileData;
 };

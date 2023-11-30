@@ -1,0 +1,27 @@
+[
+  {
+    key: 'common',
+    value: [
+      [Object], [Object],
+      [Object], [Object],
+      [Object], [Object],
+      [Object], [Object]
+    ],
+    status: 'noChange'
+  },
+  {
+    key: 'group1',
+    value: [ [Object], [Object], [Object], [Object], [Object] ],
+    status: 'noChange'
+  },
+  {
+    key: 'group2',
+    value: { abc: 12345, deep: [Object] },
+    status: 'removed'
+  },
+  {
+    key: 'group3',
+    value: { deep: [Object], fee: 100500 },
+    status: 'added'
+  }
+]

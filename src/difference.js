@@ -1,6 +1,5 @@
 import _ from 'lodash';
 import getData from './parsers.js';
-import format from './format.js';
 
 const isObject = (obj) => Object.prototype.toString.call(obj) === '[object Object]';
 
@@ -12,7 +11,7 @@ const getStatuses = {
   updated: 'updated',
 };
 
-const getDifference = (path1, path2, formater = 'stylish') => {
+const getDifference = (path1, path2) => {
   const file1Data = getData(path1);
   const file2Data = getData(path2);
 
@@ -49,7 +48,7 @@ const getDifference = (path1, path2, formater = 'stylish') => {
     return _.sortBy(_.concat(file1Difference, file2Additional), (obj) => obj.key);
   };
 
-  return format(iter(file1Data, file2Data), formater);
+  return iter(file1Data, file2Data);
 };
 
 export default getDifference;

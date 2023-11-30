@@ -44,12 +44,12 @@ const plain = (data) => {
           return dataToIter.flatMap((obj) => iter(obj, dataToIter.key));
         }
 
-        return '';
+        return null;
       }
     }
   };
 
-  return iter(data).filter(Boolean).join('');
+  return iter(data).join('');
 };
 
 export default plain;

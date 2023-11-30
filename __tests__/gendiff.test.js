@@ -1,9 +1,8 @@
 import fs from 'node:fs';
 import { fileURLToPath } from 'url';
 import path, { dirname } from 'node:path';
-import getDifference from '../src/difference.js';
+import genDiff from '../src/index.js';
 
-// let expectedDiff;
 let expectedRecurentDiff;
 
 beforeEach(() => {
@@ -15,5 +14,5 @@ beforeEach(() => {
 });
 
 test('recurentJSONDifference', () => {
-  expect(getDifference('__fixtures__/recFile1.json', '__fixtures__/recFile2.json')).toMatch(expectedRecurentDiff);
+  expect(genDiff('__fixtures__/recFile1.json', '__fixtures__/recFile2.json')).toEqual(expectedRecurentDiff);
 });

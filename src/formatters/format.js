@@ -1,5 +1,5 @@
 import stylish from './stylish.js';
-import plain from './formatters/plain.js';
+import plain from './plain.js';
 
 const format = (data, formatName) => {
   switch (formatName) {
