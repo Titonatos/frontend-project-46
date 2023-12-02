@@ -3,9 +3,9 @@
   "type": "module",
   "version": "1.0.0",
   "description": "[![Actions Status](https://github.com/Titonatos/frontend-project-46/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/Titonatos/frontend-project-46/actions)",
-  "main": "bin/genDiff.js",
+  "main": "bin/gendiff.js",
   "bin": {
-    "gendiff": "bin/genDiff.js"
+    "gendiff": "bin/gendiff.js"
   },
   "scripts": {
     "test": "npx jest"
