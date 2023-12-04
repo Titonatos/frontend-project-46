@@ -49,7 +49,7 @@ const plain = (data) => {
     }
   };
 
-  return iter(data).join('');
+  return iter(data).join('').slice(0, -1);
 };
 
 export default plain;
