@@ -71,7 +71,7 @@ const stylish = (data) => {
     });
   };
 
-  return `{\n${iter(data)}\n}`;
+  return `{\n${iter(data)}\n}\n`;
 };
 
 export default stylish;
