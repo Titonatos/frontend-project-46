@@ -11,35 +11,14 @@ const getFileData = (fileName) => {
   return fs.readFileSync(referenceRecFilePath, 'utf-8');
 };
 
-test('genDiffDefault', () => {
-  const resultJSON = genDiff('__fixtures__/recFile1.json', '__fixtures__/recFile2.json');
-  const expected = getFileData('stylishResult.txt');
+describe.each(['stylish', 'plain', 'json'])('gendiff > %s format', (formatter) => {
+  test.each([
+    ['json', 'json'],
+    ['yaml', 'yml'],
+    ['json', 'yml']])('> %s : %s file types', (type1, type2) => {
+    const resultJSON = genDiff(`__fixtures__/recFile1.${type1}`, `__fixtures__/recFile2.${type2}`, formatter);
+    const expected = getFileData(`${formatter}Result.txt`);
 
-  expect(resultJSON).toEqual(expected);
-
-  const resultYaml = genDiff('__fixtures__/recFile1.yaml', '__fixtures__/recFile2.yml');
-
-  expect(resultYaml).toEqual(expected);
-});
-
-test('genDiffPlain', () => {
-  const resultJSON = genDiff('__fixtures__/recFile1.json', '__fixtures__/recFile2.json', 'plain');
-  const expected = getFileData('plainResult.txt');
-
-  expect(resultJSON).toEqual(expected);
-
-  const resultYaml = genDiff('__fixtures__/recFile1.yaml', '__fixtures__/recFile2.yml', 'plain');
-
-  expect(resultYaml).toEqual(expected);
-});
-
-test('genDiffJSON', () => {
-  const resultJSON = genDiff('__fixtures__/recFile1.json', '__fixtures__/recFile2.json', 'json');
-  const expected = getFileData('JSONResult.txt');
-
-  expect(resultJSON).toEqual(expected);
-
-  const resultYaml = genDiff('__fixtures__/recFile1.yaml', '__fixtures__/recFile2.yml', 'json');
-
-  expect(resultYaml).toEqual(expected);
+    expect(resultJSON).toEqual(expected);
+  });
 });
