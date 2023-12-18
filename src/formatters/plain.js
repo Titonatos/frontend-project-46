@@ -1,30 +1,35 @@
-const getValue = (obj) => {
-  if (typeof obj.value === 'object' && obj.value !== null) {
+const getValue = (object) => (Object.prototype.hasOwnProperty.call(object, 'children') ? object.children : object.value);
+
+const getFormatedValue = (obj) => {
+  const value = getValue(obj);
+
+  if (typeof value === 'object' && value !== null) {
     return '[complex value]';
   }
 
-  if (typeof obj.value === 'string') {
-    return `'${obj.value}'`;
+  if (typeof value === 'string') {
+    return `'${value}'`;
   }
 
-  return obj.value;
+  return value;
 };
 
 const plain = (data) => {
   const iter = (dataToIter, depthPath = '') => {
     const currentDepthPath = depthPath ? `${depthPath}.${dataToIter.key}` : `${dataToIter.key}`;
+    const value = getValue(dataToIter);
 
     switch (dataToIter.status) {
       case 'noChange': {
-        if (Array.isArray(dataToIter.value)) {
-          return dataToIter.value.flatMap((obj) => iter(obj, `${currentDepthPath}`));
+        if (Array.isArray(value)) {
+          return value.flatMap((obj) => iter(obj, `${currentDepthPath}`));
         }
 
-        return iter(dataToIter.value, dataToIter.key);
+        return iter(value, dataToIter.key);
       }
 
       case 'added': {
-        return `Property '${currentDepthPath}' was added with value: ${getValue(dataToIter)}\n`;
+        return `Property '${currentDepthPath}' was added with value: ${getFormatedValue(dataToIter)}\n`;
       }
 
       case 'removed': {
@@ -32,11 +37,11 @@ const plain = (data) => {
       }
 
       case 'old': {
-        return `Property '${currentDepthPath}' was updated. From ${getValue(dataToIter)}`;
+        return `Property '${currentDepthPath}' was updated. From ${getFormatedValue(dataToIter)}`;
       }
 
       case 'updated': {
-        return ` to ${getValue(dataToIter)}\n`;
+        return ` to ${getFormatedValue(dataToIter)}\n`;
       }
 
       default: {

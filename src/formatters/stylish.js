@@ -4,7 +4,7 @@ const isObject = (obj) => Object.prototype.toString.call(obj) === '[object Objec
 
 const getKey = (object) => object.key;
 
-const getValue = (object, value = 'value') => object[value];
+const getValue = (object) => (Object.prototype.hasOwnProperty.call(object, 'children') ? object.children : object.value);
 
 const hasObjectChildren = (obj) => isObject(getValue(obj));
 
