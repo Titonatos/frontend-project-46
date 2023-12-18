@@ -36,30 +36,6 @@ const getDifference = (file1Data, file2Data) => {
     });
 
     return treeDifferences;
-  //   const file1Difference = keys1.flatMap((key) => {
-  //     if (keys2.includes(key) === false) {
-  //       return { key, value: file1[key], status: removed };
-  //     }
-
-  //     if (_.isPlainObject(file1[key]) && _.isPlainObject(file2[key])) {
-  //       return { key, value: iter(file1[key], file2[key], depth + 1), status: noChange };
-  //     }
-
-  //     if (file1[key] === file2[key]) {
-  //       return { key, value: file1[key], status: noChange };
-  //     }
-
-  //     return [
-  //       { key, value: file1[key], status: old },
-  //       { key, value: file2[key], status: updated }];
-  //   });
-
-  //   const file2Additional = keys2
-  //     .filter((key) => !keys1.includes(key))
-  //     .flatMap((key) => ({ key, value: file2[key], status: added }));
-
-  //   return _.sortBy(_.concat(file1Difference, file2Additional), (obj) => obj.key);
-  // };
   };
 
   return iter(file1Data, file2Data);
