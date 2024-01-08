@@ -1,32 +1,33 @@
+import _ from 'lodash';
+
 const getIndent = (multipler, correction = 2, indent = ' ', indentPerMultipler = 4) => `${indent.repeat(multipler * indentPerMultipler - correction)}`;
-
-const isObject = (obj) => Object.prototype.toString.call(obj) === '[object Object]';
-
-const getKey = (object) => object.key;
 
 const getValue = (object) => (Object.prototype.hasOwnProperty.call(object, 'children') ? object.children : object.value);
 
-const hasObjectChildren = (obj) => isObject(getValue(obj));
+const hasObjectChildren = (obj) => _.isPlainObject(getValue(obj));
 
 const getStatus = (object) => object.status;
 
-const stylish = (data) => {
+const getPrefix = (status) => {
   const prefixes = {
     noChange: '  ',
     added: '+ ',
     removed: '- ',
     old: '- ',
     updated: '+ ',
-    undefined: '',
   };
 
-  const formatLine = (key, value, status, depth, correction = 2) => `${getIndent(depth, correction) + prefixes[status] + key}: ${value}`;
+  return prefixes[status] ?? '';
+};
+
+const stylish = (data) => {
+  const formatLine = (key, value, status, depth, correction = 2) => `${getIndent(depth, correction) + getPrefix(status) + key}: ${value}`;
 
   const formatObject = (key, status, children, depth) => {
     const formattedChildren = Array.isArray(children) ? children.join('\n') : children;
 
     return [
-      `${getIndent(depth) + prefixes[status] + key}: {`,
+      `${getIndent(depth) + getPrefix(status) + key}: {`,
       formattedChildren,
       `${getIndent(depth, 0)}}`,
     ];
@@ -38,13 +39,13 @@ const stylish = (data) => {
     }
 
     if (Array.isArray(getValue(dataToIter))) {
-      return formatObject(getKey(dataToIter), getStatus(dataToIter), getValue(dataToIter)
+      return formatObject(dataToIter.key, getStatus(dataToIter), getValue(dataToIter)
         .flatMap((obj) => iter(obj, depth + 1)), depth);
     }
 
     if (hasObjectChildren(dataToIter)) {
       return formatObject(
-        getKey(dataToIter),
+        dataToIter.key,
         getStatus(dataToIter),
         iter(
           getValue(dataToIter),
@@ -55,13 +56,13 @@ const stylish = (data) => {
     }
 
     if (getStatus(dataToIter) !== undefined) {
-      return formatLine(getKey(dataToIter), getValue(dataToIter), getStatus(dataToIter), depth);
+      return formatLine(dataToIter.key, getValue(dataToIter), getStatus(dataToIter), depth);
     }
 
     return Object.keys(dataToIter).map((key) => {
-      if (isObject(dataToIter[key])) {
+      if (_.isPlainObject(dataToIter[key])) {
         return [
-          `${getIndent(depth, 0) + prefixes[getStatus(dataToIter)] + key}: {`,
+          `${getIndent(depth, 0) + getPrefix(getStatus(dataToIter)) + key}: {`,
           iter(dataToIter[key], depth + 1),
           `${getIndent(depth, 0)}}`,
         ].join('\n');

@@ -1,4 +1,4 @@
-const getValue = (object) => (Object.prototype.hasOwnProperty.call(object, 'children') ? object.children : object.value);
+const getValue = (object) => (Object.hasOwn(object, 'children') ? object.children : object.value);
 
 const getFormatedValue = (obj) => {
   const value = getValue(obj);

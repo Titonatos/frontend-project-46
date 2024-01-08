@@ -12,6 +12,6 @@ export default (fileData, fileType) => {
     }
 
     default:
-      throw new Error('This file is not supported');
+      throw new Error(`Неподдерживаемый тип файла: ${fileType}`);
   }
 };
